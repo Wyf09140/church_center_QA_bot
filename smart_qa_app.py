@@ -1,6 +1,7 @@
 import streamlit as st
 
-st.set_page_config(page_title="常见问题解答 - 教会奉献", layout="centered")
+st.set_page_config(page_title="基督之家 ‧ 第一家 ‧ 教会奉献常见问题解答", layout="centered")
+import time
 
 import pandas as pd
 import gspread
@@ -31,9 +32,101 @@ def load_faiss_index():
 retriever = load_faiss_index()
 df = load_qa_from_google_sheet()
 
-st.title("📖 教会奉献常见问题解答")
+import time
 
-query = st.text_input("🔍 请输入您的问题（例如：如何设定定期奉献？）")
+# 🎯 用 placeholder 控制显示与清除
+quote_area = st.empty()
+
+quote_area.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.fade-in-out {
+    animation: fadeInOut 2.7s ease-in-out forwards;
+}
+</style>
+
+<div class="fade-in-out" style="
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 60px;
+    padding: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    line-height: 1.8;
+    color: #333;
+">
+    <div style="margin-bottom: 12px;">
+        “你们要将当纳的十分之一全然送入仓库，使我家有粮，<br>
+        以此试试我，是否为你们敞开天上的窗户，<br>
+        倾福与你们，甚至无处可容。”<br>
+        ——《马拉基书》第三章第十节
+    </div>
+    <div style="font-size: 18px; color: #666;">
+        “Bring the whole tithe into the storehouse, that there may be food in my house.<br>
+        ‘Test me in this,’ says the Lord Almighty,<br>
+        ‘and see if I will not throw open the floodgates of heaven and pour out so much blessing<br>
+        that there will not be room enough to store it.’<br>
+        — Malachi 3:10 (NIV)
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# ⏳ 展示 4 秒后清除
+time.sleep(2.7)
+quote_area.empty()
+
+
+col_logo, col_link = st.columns([3, 5])
+
+with col_logo:
+    st.image("logo.png", width=300)
+
+with col_link:
+    st.markdown(
+        """
+        <div style="padding-top: 24px; text-align: right;">
+            <a href="https://the-home-of-christ-490912.churchcenter.com/home" target="_blank"
+               style="
+                   font-size: 16px;
+                   color: #000;
+                   text-decoration: none;
+                   border: 1px solid #000;
+                   padding: 6px 12px;
+                   border-radius: 6px;
+               ">
+                👉 开始用 Church Center 奉献
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+st.markdown("""
+<div style='text-align: center; margin-top: 16px; margin-bottom: 20px;'>
+    <h1 style='font-size: 34px; font-weight: 600; margin-bottom: 0;'>
+        教会奉献 - Church Center 常见问题解答
+    </h1>
+</div>
+""", unsafe_allow_html=True)
+
+
+# 搜索区域
+st.markdown("""
+<h4 style='font-size: 22px; font-weight: 400; margin-top: 20px;'>
+<strong>🔍 请输入您的问题（例如：如何设定定期奉献？）</strong>
+</h4>
+""", unsafe_allow_html=True)
+
+query = st.text_input("", placeholder="请在此输入问题/Enter your question here...（支持简体 / 繁體 / English）")
+
 
 # ✅ 合并处理
 if query:
@@ -45,7 +138,7 @@ if query:
 
         if st.checkbox("✍️ 使用 AI 智能补充回答"):
             prompt = f"""
-你是一个教会的问答助手。请根据以下问题与相关内容以及Church Center软件的了解，用简洁、清楚、亲切的语气回答提问者的问题。
+你是一个教会的问答助手。请根据以下问题与相关内容以及Church Center软件的了解，用简洁、清楚、亲切的语气回答提问者的问题。回复的文字和提问者所使用文字保持一致。
 
 问题: {query}
 相关内容: {context}
@@ -71,7 +164,12 @@ if query:
 
 # 📋 展示全部 Q&A
 st.markdown("---")
-st.markdown("### 📋 全部常见问题")
+st.markdown("""
+<h4 style='font-size: 22px; font-weight: 500; margin-top: 36px; margin-bottom: 12px;'>
+<strong>📋 全部常见问题 / General Questions</strong>
+</h4>
+""", unsafe_allow_html=True)
+
 
 
 # 创建两列，实现图标+提示语 与 radio 同行
@@ -84,13 +182,19 @@ with col1:
     )
 
 with col2:
-    lang = st.radio("", ["中文", "English"], horizontal=True, label_visibility="collapsed")
+    lang = st.radio("", ["中文(简)", "中文(繁)", "English"], horizontal=True, label_visibility="collapsed")
 
-
-lang_code = "zh" if lang == "中文" else "en"
+# 明确地根据选择项设定语言代码
+if lang == "中文(简)":
+    lang_code = "zh"
+elif lang == "中文(繁)":
+    lang_code = "zh-TW"
+else:
+    lang_code = "en"
 
 filtered_df = df[df["lang"] == lang_code]
-for idx, (_, row) in enumerate(filtered_df.iterrows()):
-    st.markdown(f"**Q{idx+1}: {row['question']}**")
+
+for idx, row in filtered_df.iterrows():
+    st.markdown(f"**Q{idx + 1}: {row['question']}**")
     st.markdown(f"👉 {row['answer']}")
     st.markdown("<hr style='margin-top: 16px; margin-bottom: 24px;'>", unsafe_allow_html=True)
