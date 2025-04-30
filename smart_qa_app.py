@@ -34,12 +34,11 @@ df = load_qa_from_google_sheet()
 
 import time
 
-# 🎯 用 placeholder 控制显示与清除
 quote_area = st.empty()
 
 quote_area.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC&family=Playfair+Display&display=swap');
 
 @keyframes fadeInOut {
     0% { opacity: 0; }
@@ -48,38 +47,38 @@ quote_area.markdown("""
     100% { opacity: 0; }
 }
 .fade-in-out {
-    animation: fadeInOut 2.7s ease-in-out forwards;
+    animation: fadeInOut 4s ease-in-out forwards;
+}
+
+.bible-verse-box {
+    background: linear-gradient(to bottom right, rgba(255,255,255,0.8), rgba(240,240,240,0.85));
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: inline-block;
 }
 </style>
 
-<div class="fade-in-out" style="
-    text-align: center;
-    margin-top: 60px;
-    margin-bottom: 60px;
-    padding: 20px;
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    line-height: 1.8;
-    color: #333;
-">
-    <div style="margin-bottom: 12px;">
+<div class="fade-in-out" style="text-align: center; margin-top: 60px; margin-bottom: 60px;">
+  <div class="bible-verse-box" style="font-family: 'Noto Serif SC', serif; font-size: 20px; line-height: 2; color: #444;">
+    <div style="margin-bottom: 18px;">
         “你们要将当纳的十分之一全然送入仓库，使我家有粮，<br>
         以此试试我，是否为你们敞开天上的窗户，<br>
         倾福与你们，甚至无处可容。”<br>
-        ——《马拉基书》第三章第十节
+        —— 《马拉基书》第三章第十节
     </div>
-    <div style="font-size: 18px; color: #666;">
+    <div style="font-family: 'Playfair Display', serif; font-size: 16px; color: #666;">
         “Bring the whole tithe into the storehouse, that there may be food in my house.<br>
         ‘Test me in this,’ says the Lord Almighty,<br>
-        ‘and see if I will not throw open the floodgates of heaven and pour out so much blessing<br>
-        that there will not be room enough to store it.’<br>
+        ‘and see if I will not throw open the floodgates of heaven and pour out so much blessing that there will not be room enough to store it.’<br>
         — Malachi 3:10 (NIV)
     </div>
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ⏳ 展示 4 秒后清除
-time.sleep(2.7)
+import time
+time.sleep(4)
 quote_area.empty()
 
 
