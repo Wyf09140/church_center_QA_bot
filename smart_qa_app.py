@@ -47,7 +47,7 @@ quote_area.markdown("""
     100% { opacity: 0; }
 }
 .fade-in-out {
-    animation: fadeInOut 4s ease-in-out forwards;
+    animation: fadeInOut 3s ease-in-out forwards;
 }
 
 .bible-verse-box {
@@ -78,7 +78,7 @@ quote_area.markdown("""
 """, unsafe_allow_html=True)
 
 import time
-time.sleep(4)
+time.sleep(3)
 quote_area.empty()
 
 
