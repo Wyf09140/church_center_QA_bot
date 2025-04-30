@@ -47,7 +47,7 @@ quote_area.markdown("""
     100% { opacity: 0; }
 }
 .fade-in-out {
-    animation: fadeInOut 3s ease-in-out forwards;
+    animation: fadeInOut 4s ease-in-out forwards;
 }
 
 .bible-verse-box {
@@ -78,7 +78,7 @@ quote_area.markdown("""
 """, unsafe_allow_html=True)
 
 import time
-time.sleep(3)
+time.sleep(4)
 quote_area.empty()
 
 
@@ -193,7 +193,8 @@ else:
 
 filtered_df = df[df["lang"] == lang_code]
 
-for idx, row in filtered_df.iterrows():
-    st.markdown(f"**Q{idx + 1}: {row['question']}**")
+for i, (_, row) in enumerate(filtered_df.iterrows()):
+    st.markdown(f"**Q{i + 1}: {row['question']}**")
     st.markdown(f"👉 {row['answer']}")
     st.markdown("<hr style='margin-top: 16px; margin-bottom: 24px;'>", unsafe_allow_html=True)
+
