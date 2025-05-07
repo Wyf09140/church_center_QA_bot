@@ -42,6 +42,26 @@ with st.sidebar:
         unsafe_allow_html=True
     )
 
+    button_text = "✉️ 協助聯絡 / Help & Contact"
+    st.markdown(
+        f"""
+        <a href="mailto:donations@hoc1.org"
+        style="
+            display: inline-block;
+            font-size: 14px;
+            color: #000;
+            text-decoration: none;
+            border: 1px solid #000;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background-color: #fff;
+        ">
+        {button_text}
+        </a>
+        """,
+        unsafe_allow_html=True
+    )
+
 # --- Data and model loading ---
 @st.cache_data
 def load_qa_from_google_sheet():
